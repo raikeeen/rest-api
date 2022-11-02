@@ -33,7 +33,8 @@ class LoginRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if(!Hash::check($this->password, User::where('email', $this->email)->first()['password'])) {
+            $user = User::where('email', $this->email)->first();
+            if(isset($user) && !Hash::check($this->password, $user->password)) {
                 $validator->errors()->add('password', 'The password is incorrect.');
             }
         });
