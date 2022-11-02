@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\UserService;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -95,5 +97,15 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function login(LoginRequest $loginRequest)
+    {
+        if (auth()->attempt($loginRequest->validated())) {
+            $token = auth()->user()->createToken('AuthToken')->accessToken;
+            return response()->json(['token' => $token], 200);
+        }
+
+        return response()->json(['error' => 'Unauthorised'], 401);
     }
 }
