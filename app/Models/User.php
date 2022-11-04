@@ -49,4 +49,12 @@ class User extends Authenticatable
     public function setPasswordAttribute($value){
         $this->attributes['password'] = bcrypt($value);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function resetPassword()
+    {
+        return $this->hasOne('App\Models\ResetPassword', 'user_id');
+    }
 }

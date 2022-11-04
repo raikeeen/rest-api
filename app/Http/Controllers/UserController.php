@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\ResetRequest;
+use App\Http\Requests\ResetStoreRequest;
 use App\Models\User;
 use App\Services\UserService;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -99,6 +100,10 @@ class UserController extends Controller
         //
     }
 
+    /**
+     * @param LoginRequest $loginRequest
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $loginRequest)
     {
         if (auth()->attempt($loginRequest->validated())) {
@@ -107,5 +112,27 @@ class UserController extends Controller
         }
 
         return response()->json(['error' => 'Unauthorised'], 401);
+    }
+
+    /**
+     * @param ResetRequest $resetRequest
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function passwordReset(ResetRequest $resetRequest)
+    {
+        $this->userService->sendResetToken($resetRequest->validated());
+
+        return response()->json(['message' => 'Mail has been sent successfully'], 200);
+    }
+
+    /**
+     * @param ResetStoreRequest $storeRequest
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function passwordUpdate(ResetStoreRequest $storeRequest)
+    {
+        $this->userService->updateUserPasswordAfterReset($storeRequest->validated());
+
+        return response()->json(['message' => 'The password has been updated'], 200);
     }
 }
