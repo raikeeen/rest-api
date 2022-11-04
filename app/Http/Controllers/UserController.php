@@ -129,9 +129,9 @@ class UserController extends Controller
      * @param ResetStoreRequest $storeRequest
      * @return \Illuminate\Http\JsonResponse
      */
-    public function passwordStore(ResetStoreRequest $storeRequest)
+    public function passwordUpdate(ResetStoreRequest $storeRequest)
     {
-        $this->userService->storeUserPassword($storeRequest->validated());
+        $this->userService->updateUserPasswordAfterReset($storeRequest->validated());
 
         return response()->json(['message' => 'The password has been updated'], 200);
     }

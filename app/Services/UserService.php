@@ -50,10 +50,8 @@ class UserService
      * @param array $data
      * @return void
      */
-    public function storeUserPassword(array $data): void
+    public function updateUserPasswordAfterReset(array $data): void
     {
-        // Note: No model events are fired when updating a set of models via the Eloquent query builder.
-        // Should I use method bcrypt() again in this case? The model user has already included the bcrypt()
         $resetPassword = ResetPasswordModel::where('token', $data['token'])->first();
         $resetPassword->user()->update([
             'password' => bcrypt($data['password'])
