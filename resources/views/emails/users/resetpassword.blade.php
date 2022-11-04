@@ -3,7 +3,7 @@
 
 Use the link below to set up a new password for your account.
 
-    @component('mail::button', ['url' => route('newPassword').'?token='.$token])
+    @component('mail::button', ['url' => url('/new-password').'?token='.$token])
         SET NEW PASSWORD
     @endcomponent
 
