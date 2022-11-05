@@ -63,11 +63,13 @@ class UserService
 
     /**
      * @param array $data
-     * @param $user
+     * @param User $user
      * @return mixed
      */
-    public function updateUser(array $data, $user)
+    public function updateUser(array $data, User $user)
     {
-        return $user->update($data);
+        $user->update($data);
+
+        return $user->refresh();
     }
 }
