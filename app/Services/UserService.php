@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\ResetPassword;
 use App\Models\ResetPassword as ResetPasswordModel;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -58,5 +59,15 @@ class UserService
         ]);
 
         $resetPassword->delete();
+    }
+
+    /**
+     * @param array $data
+     * @param $user
+     * @return mixed
+     */
+    public function updateUser(array $data, $user)
+    {
+        return $user->update($data);
     }
 }

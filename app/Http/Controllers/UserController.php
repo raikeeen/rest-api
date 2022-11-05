@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetRequest;
 use App\Http\Requests\ResetStoreRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -82,11 +83,13 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateRequest $updateRequest, User $user)
     {
-        //
+        $this->userService->updateUser($updateRequest->validated(), $user);
+
+        return response()->json(['message' => 'User has been updated'], 200);
     }
 
     /**
