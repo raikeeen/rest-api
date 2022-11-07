@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetRequest;
@@ -11,6 +12,8 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\User as UserResource;
 
 class UserController extends Controller
 {
@@ -24,11 +27,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $users = $this->userService->getUsers();
+
+        return response()->json(new UserCollection($users), 200);
     }
 
     /**
@@ -60,11 +65,11 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(User $user)
+    public function show(GetRequest $getRequest, User $user)
     {
-        //
+        return response()->json(new UserResource($user), 200);
     }
 
     /**
