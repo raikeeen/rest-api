@@ -72,4 +72,12 @@ class UserService
 
         return $user->refresh();
     }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getUsers()
+    {
+        return User::all();
+    }
 }

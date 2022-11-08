@@ -30,7 +30,9 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        return $user->id === $model->id
+            ? Response::allow()
+            : Response::deny('This action is unauthorized.');
     }
 
     /**
