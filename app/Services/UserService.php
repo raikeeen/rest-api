@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\ResetPassword;
 use App\Models\ResetPassword as ResetPasswordModel;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -79,5 +80,24 @@ class UserService
     public function getUsers()
     {
         return User::all();
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function deleteUser(User $user): void
+    {
+        $user->update(['status' => 2]);
+    }
+
+    public function generatePdf(User $user)
+    {
+        $data = [
+            'email' => $user->email,
+            'date' => date('m/d/Y')
+        ];
+
+        return Pdf::loadView('pdf.userdelete', $data);
     }
 }

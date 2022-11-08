@@ -1,0 +1,16 @@
+body {
+    background: darkgray !important;
+}
+.container {
+    border-radius: 15px;
+    background: white;
+    max-width: 400px;
+}
+label {
+    padding-bottom: 15px;
+}
+video {
+    display: flex;
+    padding-bottom: 20px;
+}
+
