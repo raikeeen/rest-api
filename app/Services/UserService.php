@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Mail\ResetPassword;
+use App\Mail\SendMailWithPdf;
 use App\Models\ResetPassword as ResetPasswordModel;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -91,13 +92,19 @@ class UserService
         $user->update(['status' => 2]);
     }
 
-    public function generatePdf(User $user)
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function sendFarewellMail(User $user)
     {
         $data = [
             'email' => $user->email,
             'date' => date('m/d/Y')
         ];
 
-        return Pdf::loadView('pdf.userdelete', $data);
+        $pdf = Pdf::loadView('pdf.userdelete', $data);
+
+        Mail::to($user->email)->send(new SendMailWithPdf($pdf));
     }
 }

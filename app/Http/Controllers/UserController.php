@@ -109,10 +109,7 @@ class UserController extends Controller
     public function destroy(DeleteRequest $deleteRequest, User $user)
     {
         $this->userService->deleteUser($user);
-
-        $pdf = $this->userService->generatePdf($user);
-
-        Mail::to($user->email)->send(new SendMailWithPdf($pdf));
+        $this->userService->sendFarewellMail($user);
 
         return response()->json(['message' => 'Your account have been deleted!'], 200);
     }
