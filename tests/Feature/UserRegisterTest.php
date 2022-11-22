@@ -18,8 +18,10 @@ class UserRegisterTest extends TestCase
     {
         $this->artisan('passport:install');
 
+        $fakeMail = fake()->unique()->safeEmail();
+
         $data = [
-            'email' => 'nick12ds34sd544f676768@gmail.com',
+            'email' => $fakeMail,
             'password' => '1234567890',
             'password_confirmation' => '1234567890',
         ];
@@ -30,7 +32,7 @@ class UserRegisterTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('users', [
-            'email' => 'nick12ds34sd544f676768@gmail.com'
+            'email' => $fakeMail
         ]);
     }
 }

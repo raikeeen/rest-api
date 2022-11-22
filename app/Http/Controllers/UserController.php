@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\GetRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetRequest;
 use App\Http\Requests\ResetStoreRequest;
 use App\Http\Requests\UpdateRequest;
+use App\Mail\SendMailWithPdf;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\User as UserResource;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -101,11 +104,14 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(User $user)
+    public function destroy(DeleteRequest $deleteRequest, User $user)
     {
-        //
+        $this->userService->deleteUser($user);
+        $this->userService->sendFarewellMail($user);
+
+        return response()->json(['message' => 'Your account have been deleted!'], 200);
     }
 
     /**
