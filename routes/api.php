@@ -24,5 +24,5 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('reset-password', [UserController::class, 'passwordReset']);
 Route::resource('users', UserController::class)->only(['store']);
 Route::middleware('auth:api')->group(function () {
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->except(['store']);
 });

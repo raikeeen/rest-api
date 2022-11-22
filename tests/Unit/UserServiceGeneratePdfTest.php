@@ -2,10 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Mail\SendMailWithPdf;
 use App\Models\User;
 use App\Services\UserService;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class UserServiceGeneratePdfTest extends TestCase
@@ -18,10 +20,12 @@ class UserServiceGeneratePdfTest extends TestCase
      */
     public function test_generate_pdf()
     {
+        Mail::fake();
+
         $user = User::factory()->create()->first();
 
-        $pdf = app()->make(UserService::class)->generatePdf($user);
+        app()->make(UserService::class)->sendFarewellMail($user);
 
-        $this->assertInstanceOf( PDF::class, $pdf);
+        Mail::assertSent(SendMailWithPdf::class);
     }
 }
